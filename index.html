@@ -2,51 +2,21 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Casino Virtual Recreativo</title>
     <link rel="stylesheet" href="css/main.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 </head>
 <body>
     <header>
         <h1>Casino Recreativo</h1>
         <div id="balance-container">
-            Créditos: <span id="user-credits">1000</span>
-        </div>
+            Créditos: <span id="saldo-display">1000</span> </div>
     </header>
 
     <main id="app-container">
-    <section class="lobby">
-        <h2 class="lobby-title">Elegí tu mesa</h2>
-        
-        <div class="game-grid">
-            <div class="game-card" onclick="cargarJuego('slots')">
-                <div class="card-image slots-bg">
-                    <span class="badge">Nuevo</span>
-                </div>
-                <div class="card-info">
-                    <h3>Tragamonedas</h3>
-                    <p>Probá tu suerte en las máquinas clásicas.</p>
-                    <button class="btn-casino">Jugar Ahora</button>
-                </div>
-            </div>
+        </main>
 
-            <div class="game-card" onclick="cargarJuego('ruleta')">
-                <div class="card-image ruleta-bg"></div>
-                <div class="card-info">
-                    <h3>Ruleta Europea</h3>
-                    <p>La emoción del giro en tiempo real.</p>
-                    <button class="btn-casino">Próximamente</button>
-                </div>
-            </div>
-        </div>
-    </section>
-</main>
-
-    <script src="js/auth.js"></script>
-    <script src="js/slots.js"></script>
-    <script src="js/roulette.js"></script>
+    <script src="js/roulette.js"></script> <script src="js/slots.js"></script>
     <script src="js/main.js"></script>
-    
 </body>
 </html>

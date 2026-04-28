@@ -1,20 +1,13 @@
-// scss/main.scss
-
-// 1. Variables de Estilo (Colores de Casino Real)
-$color-fondo: #0f0f0f; // Negro profundo
-$color-primario: #d4af37; // Dorado metálico
-$color-secundario: #1a1a1a; // Gris oscuro para tarjetas
+// 1. Variables de Estilo
+$color-fondo: #0f0f0f;
+$color-primario: #d4af37; // Dorado
+$color-secundario: #1a1a1a;
 $color-texto: #ffffff;
-$color-exito: #28a745; // Verde para premios
+$color-exito: #28a745;
 $fuente-principal: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 
-// 2. Reset Básico
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
+// 2. Reset y Base
+* { margin: 0; padding: 0; box-sizing: border-box; }
 body {
     background-color: $color-fondo;
     color: $color-texto;
@@ -24,908 +17,458 @@ body {
     min-height: 100vh;
 }
 
-// 3. Header Estilo "VIP"
+// 3. Header
 header {
     background-color: $color-secundario;
-    padding: 1rem 2rem;
+    padding: 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 2px solid $color-primario;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 
-    h1 {
-        font-size: 1.5rem;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        color: $color-primario;
-    }
-
-    #balance-container {
-        background: rgba($color-primario, 0.1);
-        padding: 0.5rem 1rem;
-        border-radius: 50px;
-        border: 1px solid $color-primario;
-        font-weight: bold;
-
-        #user-credits {
-            color: $color-primario;
-            margin-left: 5px;
-        }
-    }
+    h1 { font-size: 1.2rem; color: $color-primario; text-transform: uppercase; }
 }
 
-// 4. Contenedor Principal
-main {
-    flex: 1;
-    padding: 2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-// 5. Estilo de Botón "Premium"
-.btn-casino {
-    background-color: $color-primario;
-    color: black;
-    border: none;
-    padding: 12px 24px;
+#balance-container {
+    background: rgba($color-primario, 0.1);
+    padding: 5px 15px;
+    border-radius: 50px;
+    border: 1px solid $color-primario;
     font-weight: bold;
-    text-transform: uppercase;
+    #saldo-display { color: $color-primario; margin-left: 5px; }
+}
+
+// 4. Layout General
+.game-screen {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+
+.btn-volver {
+    align-self: flex-start;
+    background: none;
+    border: 1px solid #444;
+    color: #ccc;
+    padding: 5px 10px;
     cursor: pointer;
-    border-radius: 4px;
-    transition: transform 0.2s, background-color 0.2s;
+    margin-bottom: 10px;
+}
 
-    &:hover {
-        background-color: lighten($color-primario, 10%);
-        transform: scale(1.05);
-    }
+// 5. RULETA - Diseño Realista
+.roulette-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
 
-    &:active {
-        transform: scale(0.95);
+.wheel-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.wheel-outer {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    border: 10px solid #3e2723; // Madera
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    transition: transform 4s cubic-bezier(0.1, 0, 0.2, 1);
+    background: #000;
+}
+
+.wheel-inner {
+    width: 160px;
+    height: 160px;
+    background: radial-gradient(circle, #d4af37 0%, #8c721c 100%);
+    border-radius: 50%;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 4px solid #bda043;
+    #wheel-display { font-size: 3rem; color: white; font-weight: bold; text-shadow: 0 2px 4px black; }
+}
+
+.wheel-number-container {
+    position: absolute;
+    height: 20px;
+    width: 30px;
+    text-align: center;
+    .num-text {
+        font-weight: bold;
+        font-size: 14px;
+        &.red { color: #ff4444; }
+        &.black { color: #ffffff; }
+        &.green { color: #00ff00; }
     }
 }
 
-// Estilos para el Lobby
+// 6. EL PAÑO (Betting Board)
+.table-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.betting-board {
+    display: flex;
+    background: #1a531f;
+    border: 4px solid #3e2723;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.zero-item {
+    width: 50px;
+    background: #2e7d32;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255,255,255,0.3);
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.numbers-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 40px);
+    grid-template-rows: repeat(3, 40px);
+    grid-auto-flow: column;
+    .number-item {
+        border: 1px solid rgba(255,255,255,0.3);
+        display: flex; align-items: center; justify-content: center;
+        font-weight: bold; cursor: pointer; position: relative;
+        &.red { background: #b71c1c; }
+        &.black { background: #000; }
+    }
+}
+
+.columns-grid {
+    display: grid;
+    grid-template-rows: repeat(3, 40px);
+    width: 45px;
+    .col-btn {
+        border: 1px solid rgba(255,255,255,0.3);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.7rem; cursor: pointer; color: gold;
+    }
+}
+
+// 7. CONTROLES Y FICHAS
+.mobile-controls-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.outside-bets {
+    display: flex; gap: 10px;
+    .bet-btn {
+        flex: 1; padding: 12px; text-align: center; border-radius: 5px;
+        font-weight: bold; cursor: pointer;
+        &.red { background: #b71c1c; border: 2px solid #ff5252; }
+        &.black { background: #000; border: 2px solid #444; }
+    }
+}
+
+.control-buttons {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px;
+    .ctrl-btn {
+        padding: 10px 5px; border: none; border-radius: 4px;
+        color: white; font-weight: bold; cursor: pointer; font-size: 0.7rem;
+        &.undo { background: #f39c12; }
+        &.repeat { background: #27ae60; }
+        &.double { background: #2980b9; }
+        &.clear { background: #c0392b; }
+    }
+}
+
+.chips-fichero-horizontal {
+    display: flex; gap: 8px; justify-content: center;
+    padding: 10px; background: rgba(0,0,0,0.4); border-radius: 50px;
+    width: 100%; overflow-x: auto;
+}
+
+.chip {
+    min-width: 45px; height: 45px; border-radius: 50%;
+    border: 3px dashed white; display: flex; align-items: center;
+    justify-content: center; font-weight: bold; font-size: 0.8rem;
+    cursor: pointer; box-shadow: 0 4px 0 rgba(0,0,0,0.5);
+    &.chip-5 { background: #888; }
+    &.chip-10 { background: #d32f2f; }
+    &.chip-50 { background: #1976d2; }
+    &.chip-100 { background: #222; color: gold; border-color: gold; }
+}
+
+.chip-placed {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: gold; color: black; font-size: 9px;
+    display: flex; align-items: center; justify-content: center;
+    position: absolute; z-index: 20; border: 1px solid black;
+}
+
+// 8. SLOTS (Adaptado)
+.slot-machine-container {
+    background: #222; padding: 20px; border-radius: 15px;
+    border: 4px solid $color-primario; margin-top: 20px;
+}
+.reels-container {
+    display: flex; gap: 10px; margin-bottom: 20px;
+    .reel {
+        width: 70px; height: 90px; background: white; color: black;
+        font-size: 2.5rem; display: flex; align-items: center; justify-content: center;
+        border-radius: 8px; border: 3px solid #d4af37;
+    }
+}
+
+// 9. RESPONSIVE CELULAR
+@media (max-width: 600px) {
+    .wheel-outer { width: 220px; height: 220px; }
+    .wheel-inner { width: 120px; height: 120px; #wheel-display { font-size: 2rem; } }
+    .numbers-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        grid-template-rows: repeat(12, 35px) !important;
+        grid-auto-flow: row !important;
+    }
+    .betting-board { flex-direction: column; align-items: center; }
+    .zero-item { width: 100%; height: 35px; }
+    .columns-grid { 
+        grid-template-columns: repeat(3, 1fr); 
+        grid-template-rows: 35px; width: 100%; 
+    }
+}
+
+// --- 10. ESTILOS DEL LOBBY (AGREGAR AL FINAL) ---
+
 .lobby {
     width: 100%;
-    max-width: 1000px;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
     text-align: center;
 
     .lobby-title {
-        font-size: 2rem;
-        margin-bottom: 2rem;
-        text-transform: uppercase;
         color: $color-primario;
-        text-shadow: 0 0 10px rgba($color-primario, 0.3);
+        margin-bottom: 2rem;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
     }
 }
 
 .game-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
+    gap: 25px;
+    width: 100%;
 }
 
 .game-card {
-    background-color: $color-secundario;
-    border-radius: 12px;
+    background: $color-secundario;
+    border-radius: 15px;
+    border: 1px solid rgba($color-primario, 0.3);
     overflow: hidden;
     cursor: pointer;
-    border: 1px solid rgba($color-primario, 0.2);
     transition: all 0.3s ease;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
 
     &:hover {
-        border-color: $color-primario;
         transform: translateY(-10px);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-        
-        .card-image {
-            filter: grayscale(0%);
-            transform: scale(1.05);
-        }
+        border-color: $color-primario;
+        box-shadow: 0 15px 30px rgba($color-primario, 0.2);
     }
 
     .card-image {
-        height: 180px;
-        background-color: #333;
+        height: 160px;
         position: relative;
-        transition: all 0.5s ease;
-        filter: grayscale(40%);
-        // Aquí después pondremos imágenes reales
+        display: flex;
+        align-items: center;
+        justify-content: center;
         background-size: cover;
         background-position: center;
 
-        &.slots-bg { background-image: linear-gradient(45deg, #4b134f, #c94b4b); }
-        &.ruleta-bg { background-image: linear-gradient(45deg, #1d4350, #af4c59); }
+        &.slots-bg {
+            background: linear-gradient(45deg, #4b134f, #c94b4b);
+            &::after { content: "🎰"; font-size: 4rem; }
+        }
+
+        &.ruleta-bg {
+            background: linear-gradient(45deg, #1d4350, #af4c59);
+            &::after { content: "🎡"; font-size: 4rem; }
+        }
 
         .badge {
             position: absolute;
             top: 10px;
             right: 10px;
-            background: $color-exito;
-            color: white;
-            padding: 4px 8px;
+            background: $color-primario;
+            color: black;
+            padding: 2px 10px;
+            border-radius: 20px;
             font-size: 0.7rem;
-            border-radius: 4px;
             font-weight: bold;
         }
     }
 
     .card-info {
-        padding: 1.5rem;
-        
+        padding: 20px;
         h3 {
             color: $color-primario;
-            margin-bottom: 0.5rem;
+            margin-bottom: 8px;
         }
-
         p {
+            color: #aaa;
             font-size: 0.9rem;
-            color: #ccc;
-            margin-bottom: 1.5rem;
+            margin-bottom: 15px;
         }
     }
 }
 
-
-// scss/main.scss
-
-// Definición de la animación
-@keyframes flash-dorado {
-    0% { box-shadow: 0 0 20px #d4af37; border-color: #d4af37; }
-    50% { box-shadow: 0 0 60px #fff; border-color: #fff; }
-    100% { box-shadow: 0 0 20px #d4af37; border-color: #d4af37; }
-}
-
-// Clase que aplica la animación
-.jackpot-anim {
-    animation: flash-dorado 0.5s ease infinite !important; 
-    transition: all 0.3s;
-}
-
-.roulette-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-}
-
-.wheel-area {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    border: 10px solid #5d4037; // Color madera
-    background: radial-gradient(circle, #2e7d32, #1b5e20); // Verde paño
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 0 30px rgba(0,0,0,0.5);
-
-    #wheel-display {
-        font-size: 3rem;
-        font-weight: bold;
-        color: white;
-        margin-bottom: 10px;
-    }
-}
-
-.betting-table {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    width: 100%;
-    max-width: 400px;
-
-    .bet-option {
-        padding: 20px;
-        text-align: center;
-        background: #333;
-        border: 2px solid #555;
-        cursor: pointer;
-        font-weight: bold;
-        transition: 0.2s;
-
-        &:hover { border-color: $color-primario; background: #444; }
-        &.red { background: #b71c1c; border-color: #ef5350; }
-        &.black { background: #000; border-color: #444; }
-        &.selected { border-color: gold; box-shadow: 0 0 15px gold; }
-    }
-}
-
-.current-bet-info {
-    margin-top: 10px;
-    font-size: 1.1rem;
-    color: #aaa;
-    
-    #apuesta-tipo { color: gold; font-weight: bold; }
-    input { background: #222; color: white; border: 1px solid #444; padding: 5px; width: 70px; }
-}
-
-
-// scss/main.scss
-
-.wheel-area {
-    position: relative;
-    width: 250px;
-    height: 250px;
-    border-radius: 50%;
-    border: 12px solid #3e2723; // Madera oscura
-    background: conic-gradient(
-        #2e7d32 0deg 10deg, // El cero (Verde)
-        #b71c1c 10deg 20deg, #000 20deg 30deg, // Rojo y Negro alternados
-        #b71c1c 30deg 40deg, #000 40deg 50deg,
-        #b71c1c 50deg 60deg, #000 60deg 70deg,
-        #b71c1c 70deg 80deg, #000 80deg 90deg,
-        #b71c1c 90deg 100deg, #000 100deg 110deg,
-        #b71c1c 110deg 120deg, #000 120deg 130deg,
-        #b71c1c 130deg 140deg, #000 140deg 150deg,
-        #b71c1c 150deg 160deg, #000 160deg 170deg,
-        #b71c1c 170deg 180deg, #000 180deg 190deg,
-        #b71c1c 190deg 200deg, #000 200deg 210deg,
-        #b71c1c 210deg 220deg, #000 220deg 230deg,
-        #b71c1c 230deg 240deg, #000 240deg 250deg,
-        #b71c1c 250deg 260deg, #000 260deg 270deg,
-        #b71c1c 270deg 280deg, #000 280deg 290deg,
-        #b71c1c 290deg 300deg, #000 300deg 310deg,
-        #b71c1c 310deg 320deg, #000 320deg 330deg,
-        #b71c1c 330deg 340deg, #000 340deg 350deg,
-        #b71c1c 350deg 360deg
-    );
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: inset 0 0 50px rgba(0,0,0,0.5), 0 0 20px rgba(0,0,0,0.8);
-    transition: transform 4s cubic-bezier(0.1, 0, 0.1, 1); // Efecto de frenado suave
-
-    &.spinning {
-        // La hacemos girar varias vueltas
-        transform: rotate(1800deg); 
-    }
-
-    .wheel-center {
-        width: 60px;
-        height: 60px;
-        background: #d4af37; // Centro dorado
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #1a1a1a;
-        box-shadow: 0 0 10px rgba(0,0,0,0.5);
-        z-index: 2;
-    }
-}
-
-/* ESTILOS DE LA RULETA REFORZADOS */
-.roulette-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 15px;
-}
-
-.wheel-area {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    border: 8px solid #d4af37;
-    background: radial-gradient(circle, #2e7d32, #1b5e20);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
-
-    #wheel-display {
-        font-size: 3rem;
-        font-weight: bold;
-        color: white;
-    }
-}
-
-.betting-table {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    width: 100%;
-    max-width: 300px;
-}
-
-.bet-option {
-    padding: 15px;
-    text-align: center;
-    background: #222;
-    border: 1px solid #d4af37;
-    color: #d4af37;
-    cursor: pointer;
-    font-weight: bold;
+// Botón estilo Casino para las tarjetas
+.btn-casino {
+    background: linear-gradient(to bottom, #d4af37, #8c721c);
+    color: black;
+    border: none;
+    padding: 10px 20px;
     border-radius: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    width: 100%;
+    transition: filter 0.2s;
 
     &:hover {
-        background: #d4af37;
-        color: black;
-    }
-    
-    &.red { background: #b71c1c; color: white; border-color: #ff5252; }
-    &.black { background: #000; color: white; border-color: #444; }
-}
-
-// scss/main.scss
-
-.slot-machine-container {
-    background: radial-gradient(circle, #222, #000);
-    padding: 30px;
-    border-radius: 20px;
-    border: 4px solid #444;
-    text-align: center;
-    max-width: 500px;
-    margin: 0 auto;
-}
-
-.reels-container {
-    display: flex;         // ESTO pone las frutas en horizontal
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 30px;
-
-    .reel {
-        width: 100px;      // Tamaño fijo para que no se deformen
-        height: 120px;
-        background: white;
-        border-radius: 10px;
-        display: flex;     // Centra la fruta dentro del cuadradito
-        align-items: center;
-        justify-content: center;
-        font-size: 3.5rem;
-        color: black;
-        border: 4px solid #d4af37;
-        box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+        filter: brightness(1.2);
     }
 }
 
-.roulette-layout {
-    display: flex;
-    flex-direction: column; 
-    align-items: center;
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-}
-
-/* El Tablero */
-.betting-board {
-    display: grid;
-    grid-template-columns: 60px 1fr;
-    background: #1b5e20; // Verde paño
-    padding: 15px;
-    border: 5px solid #5d4037;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-
-    .zero-item {
-        background: #2e7d32;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        grid-row: span 3;
-        border: 1px solid white;
-        cursor: pointer;
-    }
-
-    .numbers-grid {
-        display: grid;
-        grid-template-columns: repeat(12, 1fr);
-        grid-template-rows: repeat(3, 1fr);
-        gap: 2px;
-
-        .number-item {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(255,255,255,0.3);
-            cursor: pointer;
-            font-weight: bold;
-            
-            &.red { background: #b71c1c; }
-            &.black { background: #000; }
-            &:hover { transform: scale(1.1); z-index: 10; border-color: gold; }
-        }
-    }
-}
-
-/* La Rueda con efecto Realista */
-/* LA RUEDA PROFESIONAL Y REALISTA DENTRO DE SCSS/MAIN.SCSS */
-.wheel-outer {
-    width: 300px;
-    height: 300px;
-    border-radius: 50%;
-    border: 12px solid #3e2723; // Madera oscura
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: inset 0 0 60px rgba(0,0,0,0.8), 0 10px 20px rgba(0,0,0,0.6);
-    transition: transform 5s cubic-bezier(0.1, 0, 0.1, 1);
-}
-
-// Clase para cada número generado por JS
-.wheel-number {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    color: white;
-    font-weight: bold;
-    font-size: 11px;
-    text-align: center;
-    z-index: 3;
-    text-shadow: 0 1px 2px black;
-    transform-origin: center center; // Importante para la rotación matemática
-}
-
-.wheel-inner {
-    width: 180px;
-    height: 180px;
-    // Efecto metálico/dorado
-    background: radial-gradient(circle, #d4af37 0%, #8c721c 100%); 
-    border-radius: 50%;
-    z-index: 5; // Por encima de los números
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 4px solid #bda043;
-    box-shadow: 0 0 20px rgba(0,0,0,0.8), inset 0 0 10px rgba(0,0,0,0.5);
-
-    #wheel-display {
-        font-size: 3rem;
-        color: white;
-        text-shadow: 0 2px 4px black, 0 0 10px gold;
-        font-weight: bold;
-    }
-}
-
-.wheel-inner {
-    width: 180px;
-    height: 180px;
-    background: radial-gradient(circle, #5d4037, #3e2723);
-    border-radius: 50%;
-    border: 4px solid #d4af37;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
-
-    #wheel-display {
-        font-size: 2.5rem;
-        color: gold;
-        text-shadow: 0 0 10px black;
-    }
-}
-
-.chips-container {
-    display: flex;
-    gap: 15px;
-    margin-top: 20px;
-    justify-content: center;
-}
-
-.chip {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: 4px dashed white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    color: white;
-    cursor: grab;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    transition: transform 0.2s;
-
-    &:active { cursor: grabbing; }
-    &.chip-10 { background: #fff; color: #333; }
-    &.chip-50 { background: #1976d2; }
-    &.chip-100 { background: #d32f2f; }
-    &.chip-500 { background: #1a1a1a; border-color: gold; }
-}
-
-// Clase para la ficha pequeña que queda sobre el número
-.chip-placed {
-    width: 25px;
-    height: 25px;
-    font-size: 10px;
-    position: absolute;
-    pointer-events: none; // Para que no moleste al hacer clic de nuevo
-}
-
-/* Contenedor Principal */
-.roulette-layout {
-    display: flex;
-    flex-direction: column; // Rueda arriba, Paño abajo (o 'row' si tenés pantalla ancha)
-    align-items: center;
-    gap: 30px;
-    padding: 20px;
-}
-
-/* El Paño (Mesa) */
-.betting-board {
-    display: flex; // El 0 a la izquierda y la grilla al lado
-    background: #1b5e20;
-    padding: 10px;
-    border: 4px solid #d4af37;
-    border-radius: 8px;
-
-    .zero-item {
-        width: 60px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #2e7d32;
-        border: 1px solid white;
-        cursor: pointer;
-        font-weight: bold;
-    }
-
-    /* EL PAÑO PROFESIONAL */
-.numbers-grid {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: repeat(3, 45px);
-    grid-auto-flow: column;
-    /* Invertimos el orden visual: la primera fila del grid (arriba) será para los números 3, 6, 9... */
-    /* El navegador por defecto pone 1, 2, 3 de arriba a abajo. 
-       Para que el 3 quede arriba, simplemente dejamos que el grid fluya. */
-    direction: ltr; 
-
-    .number-item {
-        width: 50px;
-        height: 45px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid white;
-        color: white;
-        font-weight: bold;
-    }
-}
-
-/* LA RUEDA PROFESIONAL Y REALISTA */
-
-
-.wheel-inner {
-    width: 160px;
-    height: 160px;
-    // Efecto metálico/dorado
-    background: radial-gradient(circle, #d4af37 0%, #8c721c 100%); 
-    border-radius: 50%;
-    z-index: 5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 6px solid #bda043; // Borde metálico
-    box-shadow: 0 0 20px rgba(0,0,0,0.8), inset 0 0 10px rgba(0,0,0,0.5);
-
-    #wheel-display {
-        font-size: 3rem;
-        color: white;
-        text-shadow: 0 2px 4px black, 0 0 20px gold;
-        font-weight: bold;
-    }
-}
-
-/* FICHERO PROFESIONAL */
-.chips-container {
-    display: flex;
-    flex-direction: column; // Mantener la columna de tu foto
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.chip {
-    width: 55px; // Un poco más grandes
-    height: 55px;
-    border-radius: 50%;
-    // Borde dashed clásico
-    border: 5px dashed white; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    color: white;
-    cursor: grab;
-    transition: all 0.2s;
-    text-shadow: 0 1px 2px black;
-
-    // Efecto 3D
-    box-shadow: 0 6px 0 rgba(0,0,0,0.4), 0 10px 15px rgba(0,0,0,0.5);
-
-    &:active { cursor: grabbing; transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,0.4); }
-
-    // Colores de denominación clásicos
-    &.chip-5 { background: #fff; color: #333; border-color: #333; }
-    &.chip-10 { background: #d32f2f; } // Rojo
-    &.chip-20 { background: #1976d2; } // Azul
-    &.chip-50 { background: #1a1a1a; border-color: gold; color: gold; } // Negro
-}
-}
-
-/* La Rueda */
-.wheel-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    
-    .wheel-outer {
-        margin-bottom: 15px; // Para que no se encime con los botones
-    }
-}
-
-/* scss/main.scss */
-
-/* Contenedor principal para centrar todo */
-.roulette-layout {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 30px; // Espacio entre rueda, paño y fichas
-    padding: 20px;
-}
-
-/* El Tablero (El paño verde) */
-
-/* scss/main.scss */
-
-.betting-board {
-    display: flex;
-    align-items: stretch; // Hace que el 0 y las columnas midan lo mismo que el grid
-    background: #1a531f;
-    border: 8px solid #3e2723;
-    border-radius: 5px;
-}
-
-.numbers-grid {
-    display: grid;
-    grid-template-columns: repeat(12, 45px);
-    grid-template-rows: repeat(3, 45px); // Cada celda mide 45px
-    grid-auto-flow: column;
-}
-
-.columns-grid {
-    display: grid;
-    grid-template-rows: repeat(3, 45px); // Forzamos 45px para que coincida con los números
-    width: 50px;
-    
-    .col-btn {
-        border: 1px solid rgba(255,255,255,0.3);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 0.7rem;
-        cursor: pointer;
-        &:hover { background: rgba(255,255,255,0.1); }
-    }
-}
-
-.bet-counter {
-    background: #000;
-    color: gold;
-    padding: 10px 20px;
-    border: 2px solid #d4af37;
-    border-radius: 5px;
-    font-family: 'Courier New', Courier, monospace;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.control-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 15px;
-    
-    .ctrl-btn {
-        padding: 8px 15px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-weight: bold;
-        color: white;
-        &.undo { background: #f39c12; }
-        &.double { background: #2980b9; }
-        &.clear { background: #c0392b; }
-    }
-}
-
-/* Las columnas a la derecha */
-.columns-bets {
-    display: grid;
-    grid-template-rows: repeat(3, 50px);
-    .col-btn {
-        width: 60px;
-        border: 1px solid white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 0.8rem;
-        cursor: pointer;
-    }
-}
-
-/* Botones Rojo y Negro abajo */
-.outside-bets {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 10px;
-    
-    .bet-btn {
-        width: 150px;
-        padding: 15px;
-        text-align: center;
-        color: white;
-        font-weight: bold;
-        border-radius: 4px;
-        cursor: pointer;
-        
-        &.red { background: #b71c1c; border: 2px solid #ff5252; }
-        &.black { background: #000; border: 2px solid #444; }
-    }
-}
-
-
-/* Historial */
-.historial-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 15px;
-    background: rgba(0,0,0,0.5);
-    padding: 5px 15px;
-    border-radius: 20px;
-    color: white;
-    font-weight: bold;
-}
-
+// --- Estilos para el Historial de Números ---
 .lista-historial {
     display: flex;
+    flex-direction: row; // Uno al lado del otro
     gap: 8px;
-    
+    padding: 10px;
+    overflow-x: auto;
+    min-height: 50px;
+    align-items: center;
+
     .historial-item {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
+        min-width: 35px;
+        height: 35px;
+        border-radius: 50%; // Forma de ficha o bola
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.9rem;
-        border: 1px solid white;
-        
-        &.rojo { background: #b71c1c; }
-        &.negro { background: #000; }
-        &.verde { background: #2e7d32; }
-    }
-}
-
-/* Colores de los números en la RUEDA */
-.wheel-number-container {
-    position: absolute;
-    z-index: 3;
-    
-    .num-text {
         font-weight: bold;
-        font-size: 12px;
+        font-size: 0.9rem;
         color: white;
-        text-shadow: 1px 1px 2px black;
-        
-        // Opcional: si querés que el color del texto sea distinto
-        // &.red { color: #ff5252; } 
-        // &.black { color: #ccc; }
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+        animation: aparecerNumero 0.4s ease-out;
+
+        &.rojo { background-color: #b71c1c; }
+        &.negro { background-color: #000000; }
+        &.verde { background-color: #2e7d32; }
     }
 }
 
-/* Botón Repetir */
-.ctrl-btn.repeat { background: #673ab7; }
-
-/* Fichas en horizontal */
-.chips-fichero-horizontal {
-    display: flex;
-    flex-direction: row; // Esto las pone una al lado de la otra
-    flex-wrap: wrap;     // Si son muchas, pasan a la fila de abajo
-    justify-content: center;
-    gap: 15px;
-    margin-top: 25px;
-    padding: 15px;
-    background: rgba(0,0,0,0.3);
-    border-radius: 50px;
+@keyframes aparecerNumero {
+    from { transform: scale(0); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
 }
 
-/* Colores de los números DENTRO de la rueda */
-.wheel-number-container {
-    .num-text.red { color: #ff4444; text-shadow: 0 0 5px rgba(255,0,0,0.5); }
-    .num-text.black { color: #ffffff; } // El fondo ya es negro, el texto blanco resalta
-    .num-text.green { color: #00ff00; font-weight: 900; }
+// --- Efecto de Presión en Botones ---
+.btn-casino, .ctrl-btn, .bet-btn, .btn-volver {
+    transition: all 0.1s ease; // Transición rápida para la presión
+    cursor: pointer;
+    user-select: none;
+
+    &:active {
+        transform: scale(0.95); // Se encoge un poquito al apretar
+        filter: brightness(0.8); // Se oscurece un poco
+        box-shadow: inset 0 3px 5px rgba(0,0,0,0.5); // Sombra interna para hundimiento
+    }
 }
 
-/* Botones de apuesta para que se note dónde se toca */
-.number-item.red { background: #b71c1c; }
-.number-item.black { background: #1a1a1a; }
+// Estilo extra para que los botones de colores (Rojo/Negro) se vean mejor
+.outside-bets .bet-btn {
+    text-shadow: 0 1px 2px black;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.3);
+    &:active {
+        box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+        transform: translateY(3px) scale(0.98);
+    }
+}
 
+button:disabled {
+    filter: grayscale(1);
+    cursor: not-allowed !important;
+    transform: none !important; // Evita el efecto de presión cuando está bloqueado
+    box-shadow: none !important;
+}
 
-
-
-
-
-/* scss/main.scss */
-
-/* Contenedor principal adaptable */
-
-
-/* --- ADAPTACIÓN PARA CELULARES --- */
-@media (max-width: 600px) {
+.timer-container {
+    background: rgba(0,0,0,0.8);
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 2px solid $color-primario;
+    font-family: 'Courier New', Courier, monospace;
+    margin-bottom: 10px;
     
-    /* Achicamos un poco la rueda para que no ocupe toda la pantalla */
-    .wheel-outer {
-        width: 220px !important;
-        height: 220px !important;
-    }
-    
-    .wheel-inner {
-        width: 130px !important;
-        height: 130px !important;
-    }
+    #timer-label { font-weight: bold; margin-right: 10px; }
+    #apuesta-timer { font-size: 1.5rem; color: $color-primario; }
+}
 
-    /* Rotamos el paño para que sea vertical */
-    .betting-board {
-        flex-direction: column; // El 0 queda arriba de los números
-        height: auto !important;
-        width: 100%;
-        max-width: 320px; // Ancho típico de un celular
-    }
+// Clase para mostrar visualmente que el paño está bloqueado
+.paño-bloqueado {
+    filter: grayscale(0.5) brightness(0.7);
+    pointer-events: none; // Esto mata todos los clicks en la mesa
+    transition: all 0.5s ease;
+}
 
-    .zero-item {
-        width: 100% !important;
-        height: 40px !important;
-        border-bottom: 2px solid gold;
-    }
+/* Estilo para cuando la mesa está bloqueada */
+[data-tipo] {
+    transition: opacity 0.3s;
+}
 
-    /* La grilla de números ahora se ve mejor en 3 columnas x 12 filas */
-    .numbers-grid {
-        grid-template-columns: repeat(3, 1fr) !important; 
-        grid-template-rows: repeat(12, 40px) !important;
-        grid-auto-flow: row !important; // IMPORTANTE: cambia el flujo a horizontal
-    }
+// Si quieres que el paño se vea más oscuro cuando no se puede apostar:
+.mesa-desactivada [data-tipo] {
+    cursor: not-allowed;
+    filter: brightness(0.6);
+}
 
-    /* Las columnas 2to1 ahora quedan abajo de la grilla */
-    .columns-grid {
-        grid-template-columns: repeat(3, 1fr) !important;
-        grid-template-rows: 40px !important;
-        width: 100% !important;
-    }
+// Mejorar el aspecto del botón deshabilitado
+button:disabled {
+    cursor: not-allowed !important;
+    filter: grayscale(0.5) contrast(0.8);
+    transform: none !important; // Evita el efecto de presión
+}
 
-    /* Los botones de control y fichas a los lados o en fila */
-    .control-buttons {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr); // Dos botones por fila
-        width: 100%;
-        gap: 5px;
-    }
-
-    .chips-fichero-horizontal {
-        gap: 8px;
-        padding: 10px 5px;
-        overflow-x: auto; // Permite deslizar las fichas si no entran
-        width: 100%;
-    }
+/* Parche de emergencia para la bolita */
+#ball {
+    width: 14px !important;
+    height: 14px !important;
+    background-color: white !important;
+    border-radius: 50% !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    z-index: 999 !important;
+    box-shadow: 0 0 10px white !important;
 }
