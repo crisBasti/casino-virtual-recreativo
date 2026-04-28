@@ -363,10 +363,11 @@ main {
 
 .roulette-layout {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 40px;
-  padding: 20px;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 /* El Tablero */
@@ -863,4 +864,56 @@ main {
 
 .number-item.black {
   background: #1a1a1a;
+}
+
+/* scss/main.scss */
+/* Contenedor principal adaptable */
+/* --- ADAPTACIÓN PARA CELULARES --- */
+@media (max-width: 600px) {
+  /* Achicamos un poco la rueda para que no ocupe toda la pantalla */
+  .wheel-outer {
+    width: 220px !important;
+    height: 220px !important;
+  }
+  .wheel-inner {
+    width: 130px !important;
+    height: 130px !important;
+  }
+  /* Rotamos el paño para que sea vertical */
+  .betting-board {
+    flex-direction: column;
+    height: auto !important;
+    width: 100%;
+    max-width: 320px;
+  }
+  .zero-item {
+    width: 100% !important;
+    height: 40px !important;
+    border-bottom: 2px solid gold;
+  }
+  /* La grilla de números ahora se ve mejor en 3 columnas x 12 filas */
+  .numbers-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    grid-template-rows: repeat(12, 40px) !important;
+    grid-auto-flow: row !important;
+  }
+  /* Las columnas 2to1 ahora quedan abajo de la grilla */
+  .columns-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    grid-template-rows: 40px !important;
+    width: 100% !important;
+  }
+  /* Los botones de control y fichas a los lados o en fila */
+  .control-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    gap: 5px;
+  }
+  .chips-fichero-horizontal {
+    gap: 8px;
+    padding: 10px 5px;
+    overflow-x: auto;
+    width: 100%;
+  }
 }/*# sourceMappingURL=main.css.map */
